@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box {
+			width: 1800px;
+			height: 800px;
+			border:1px solid black;
+			margin: 0 auto;
+		}
+		a{
+			text-decoration: none;
+		}
+	</style>
+	<script type="text/javascript" src="vue.min.js"></script>
+</head>
+<body>
+	<div class="box" id="sc">
+		<div class="box-title">
+			<p>shopcart</p>
+		</div>
+		<div class="box-content">
+			<table border="1" cellspacing="0">
+				<tr>
+					<th><input  type="checkbox"   v-model="isselectAll" >全选</th>
+					<th>商品</th>
+					<th>数量</th>
+					<th>单价(元)</th>
+					<th>金额(元)</th>
+					<th>操作</th>
+				</tr>
+				<tr v-for="(productList,index) in product">
+				<td><input  type="checkbox" v-bind:value=productList.pro_name  v-model="productList.select"></td>
+				<td>{{productList.pro_name}}</td>
+					<td>
+						<a href="javascript:;" @click="productList.pro_num==0?productList.pro_num=0:productList.pro_num--">-</a>
+							{{productList.pro_num}}
+						<a href="javascript:;" @click="productList.pro_num++">+</a>				
+					</td>
+					<td>{{productList.pro_price}}</td>
+					<td>{{productList.pro_num*productList.pro_price}}</td>
+					<td><a href="javascript:;" @click="product.splice(index,1)">删除</a></td>
+				</tr>
+			</table>
+		</div>
+		<p><a href="javascript:;" @click="product=product.filter(function (item) {return !item.select})">remove select product</a></p>
+		<p><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）：<span>{{getTotal.totalPrice}}</span></p>
+	</div>
+</body>
+<script>
+new Vue({
+	el:'#sc',
+	data:{
+		product:[
+    		{	
+    		    'pro_name': '仓储1',
+    		     pro_num: 3,
+    		    'pro_price': 800
+		
+    		},
+    		{
+    		    'pro_name': '仓储2',
+    		    'pro_num': 1,
+    		    'pro_price': 100
+		
+    		},
+    		{
+    		    'pro_name': '仓储3',
+    		    'pro_num': 2,
+    		    'pro_price': 100
+		
+    		},
+    		{
+    		    'pro_name': '仓储5',
+    		    'pro_num': 2,
+    		    'pro_price': 100
+		
+    		}
+		],
+		productCount:0,
+		producttotal:0
+	},
+	computed:{
+		isselectAll:{
+			get:function(){
+			  return this.product.every(function (val) { return val.select});
+			},
+			set:function(event){
+				this.product.forEach(function(item){
+					item.select=event;
+				})
+			}
+		},
+		 getTotal:function(){
+        var _proList=this.product.filter(function (val) { return val.select}),totalPrice=0;
+        for(var i=0,len=_proList.length;i<len;i++){
+        
+            totalPrice+=_proList[i].pro_num*_proList[i].pro_price;
+        }
+        return {totalNum:_proList.length,totalPrice:totalPrice}
+    }
+	},
+ 	methods:{
+		a:function(abc){
+			abc++;
+			return abc;
+		}
+	},
+	 mounted:function () {
+	 	var _this=this;
+	 	   this.product.map(function (item) {
+       _this.$set(item,'select',false)
+   })
+    }
+})
+
+</script>
+</html>

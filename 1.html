@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body{
+        font-family:"Microsoft YaHei";
+    }
+    #tab{
+        width: 600px;
+        margin: 0 auto;
+    }
+    .tab-tit{
+        font-size: 0;
+        width: 600px;
+    }
+    .tab-tit a{
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        width: 25%;
+        text-align: center;
+        background: #ccc;
+        color: #333;
+        text-decoration: none;
+    }
+    .tab-tit .cur{
+        background: #09f;
+        color: #fff;
+    }
+    .tab-con div{
+        border: 1px solid #ccc;
+        height: 400px;
+        padding-top: 20px;
+    }
+</style>
+<body>
+<div id="tab">
+    <div class="tab-tit">
+        <template v-for="site in sites">
+            <a href="javascript:;" @click="gettitle($event)" :class="{cur:site.name===active}">{{ site.name }}</a>
+        </template>
+    </div>
+    <div class="tab-con">
+       {{active}}
+        </div>
+    </div>
+</div>
+</body>
+<script src="vue.min.js"></script>
+<script>
+    new Vue({
+        el: '#tab',
+        data: {
+            sites:[
+                {name:'html'},
+                {name:'css'},
+                {name:'javascript'},
+                {name:'vue'}
+            ],
+            active:''
+        },
+        computed: {},
+        methods: {
+            gettitle:function(event){
+                    this.active =event.currentTarget.text;
+            }
+        },
+        mounted: function () {
+        }
+    })
+</script>
+</html>
